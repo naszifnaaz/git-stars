@@ -3,11 +3,18 @@ import { Brand } from "./Brand";
 import { FaGithub, FaSun, FaMoon } from "react-icons/fa";
 
 export const Header = () => {
-  const { colorMode, toggleColorMode } = useColorMode();
+  const { colorMode, toggleColorMode } = useColorMode("dark");
   return (
-    <Flex justifyContent="space-around" alignItems="center" m="1rem">
+    <Flex
+      justifyContent="space-around"
+      alignItems="center"
+      p="1rem"
+      mb="1rem"
+      flexWrap={"wrap"}
+      boxShadow="rgba(17, 12, 46, 0.15) 0px 48px 100px 0px"
+    >
       <Brand />
-      <Stack isInline>
+      <Stack isInline p={["1rem", 0, 0, 0]}>
         <Button
           leftIcon={<FaGithub />}
           colorScheme={"red"}
