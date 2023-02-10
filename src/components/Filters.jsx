@@ -38,6 +38,7 @@ export const Filters = () => {
       alignItems={"center"}
       justifyContent={"center"}
       gap={"10px"}
+      m={"1rem"}
     >
       <Select
         w={"300px"}

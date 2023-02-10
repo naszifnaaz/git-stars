@@ -10,7 +10,9 @@ function App() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    fetch(`https://api.github.com/search/repositories?q=sort=stars&order=desc`)
+    fetch(
+      `https://api.github.com/search/repositories?q=all&sort=stars&order=desc`
+    )
       .then((res) => res.json())
       .then((data) => dispatch(getRepos(data.items)));
   }, [dispatch]);
