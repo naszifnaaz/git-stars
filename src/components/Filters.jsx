@@ -11,15 +11,16 @@ import {
   Flex,
   useColorMode,
 } from "@chakra-ui/react";
-import { useState } from "react";
-import languages from "../data/languages";
+import languages from "../data/languages.json";
 import { FaCalendarAlt, FaTable, FaListAlt } from "react-icons/fa";
+import { useSelector, useDispatch } from "react-redux";
+import { setDateJump, setLanguage, setViewStyle } from "../redux/action";
 
 export const Filters = () => {
-  const [dateJump, setDateJump] = useState("daily");
-  const [viewStyle, setViewStyle] = useState("grid");
-  const [language, setLanguage] = useState("");
-  const { colorMode, toggleColorMode } = useColorMode("dark");
+  const dateJump = useSelector((store) => store.dateJump);
+  const viewStyle = useSelector((store) => store.viewStyle);
+  const { colorMode } = useColorMode("dark");
+  const dispatch = useDispatch();
 
   // Temporary Color logic
   let activeColor;
@@ -38,7 +39,10 @@ export const Filters = () => {
       justifyContent={"center"}
       gap={"10px"}
     >
-      <Select w={"300px"} onChange={(e) => setLanguage(e.target.value)}>
+      <Select
+        w={"300px"}
+        onChange={(e) => dispatch(setLanguage(e.target.value))}
+      >
         {languages.map((language) => (
           <option key={language.value} value={language.value}>
             {language.label}
@@ -53,10 +57,18 @@ export const Filters = () => {
           </Box>
         </MenuButton>
         <MenuList>
-          <MenuItem onClick={() => setDateJump("daily")}>Daily</MenuItem>
-          <MenuItem onClick={() => setDateJump("weekly")}>Weekly</MenuItem>
-          <MenuItem onClick={() => setDateJump("monthly")}>Monthly</MenuItem>
-          <MenuItem onClick={() => setDateJump("yearly")}>Yearly</MenuItem>
+          <MenuItem onClick={() => dispatch(setDateJump("daily"))}>
+            Daily
+          </MenuItem>
+          <MenuItem onClick={() => dispatch(setDateJump("weekly"))}>
+            Weekly
+          </MenuItem>
+          <MenuItem onClick={() => dispatch(setDateJump("monthly"))}>
+            Monthly
+          </MenuItem>
+          <MenuItem onClick={() => dispatch(setDateJump("yearly"))}>
+            Yearly
+          </MenuItem>
         </MenuList>
       </Menu>
 
@@ -68,7 +80,7 @@ export const Filters = () => {
         <Button
           leftIcon={<FaTable />}
           roundedRight={0}
-          onClick={() => setViewStyle("grid")}
+          onClick={() => dispatch(setViewStyle("grid"))}
           color={viewStyle === "grid" ? activeColor : passiveColor}
           _focus={{ boxShadow: "none" }}
           border="1px solid gray"
@@ -79,7 +91,7 @@ export const Filters = () => {
         <Button
           leftIcon={<FaListAlt />}
           roundedLeft={0}
-          onClick={() => setViewStyle("list")}
+          onClick={() => dispatch(setViewStyle("list"))}
           color={viewStyle === "list" ? activeColor : passiveColor}
           _focus={{ boxShadow: "none" }}
           border="1px solid gray"

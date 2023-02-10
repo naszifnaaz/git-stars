@@ -1,6 +1,6 @@
 import { Flex, Button, Stack, useColorMode } from "@chakra-ui/react";
 import { Brand } from "./Brand";
-import { FaGithub, FaSun, FaMoon, FaUserGraduate } from "react-icons/fa";
+import { FaGithub, FaSun, FaMoon } from "react-icons/fa";
 
 export const Header = () => {
   const { colorMode, toggleColorMode } = useColorMode("dark");
