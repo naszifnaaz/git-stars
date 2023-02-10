@@ -1,3 +1,4 @@
+import moment from "moment";
 import {
   Avatar,
   Box,
@@ -10,7 +11,8 @@ import {
 } from "@chakra-ui/react";
 import { GoIssueOpened, GoRepoForked, GoStar } from "react-icons/go";
 
-export const Repo = () => {
+export const Repo = (props) => {
+  const { repo } = props;
   const { colorMode } = useColorMode();
   return (
     <Flex
@@ -21,13 +23,10 @@ export const Repo = () => {
       rounded={"10px"}
       direction={"column"}
       w={["85", "85%", "40%", "20%"]}
+      justifyContent={"center"}
     >
       <Flex alignItems={"center"}>
-        <Avatar
-          src="https://avatars.githubusercontent.com/u/43830688?v=4"
-          w={"40px"}
-          h={"40px"}
-        />
+        <Avatar src={repo.owner.avatar_url} w={"40px"} h={"40px"} />
         <Box ml={"15px"}>
           <Heading
             fontSize={"16px"}
@@ -36,7 +35,7 @@ export const Repo = () => {
             mb={"3px"}
             color={colorMode === "light" ? "black" : "white"}
           >
-            google-research
+            {repo.owner.login}
           </Heading>
           <Text
             fontSize={"13px"}
@@ -55,30 +54,33 @@ export const Repo = () => {
           color={colorMode === "light" ? "black" : "white"}
           textDecoration={"underline"}
         >
-          tuning_playbook
+          {repo.name}
         </Heading>
         <Text
           fontSize={"0.7rem"}
           color={colorMode === "light" ? "gray.700" : "gray.400"}
           pt={"5px"}
         >
-          Built by · google-research · January 19, 2023
+          {`Built by ${repo.owner.login} on ${moment(repo.created_at).format(
+            "MMMM D, YYYY"
+          )} `}
         </Text>
 
         <Text
           fontSize={"0.8rem"}
           color={colorMode === "light" ? "black" : "white"}
           pt={"15px"}
+          maxH={"70px"}
+          overflow={"hidden"}
         >
-          A playbook for systematically maximizing the performance of deep
-          learning models
+          {repo.description}
         </Text>
       </Box>
 
       <Stack isInline>
-        <Button leftIcon={<GoStar />}>15,143</Button>
-        <Button leftIcon={<GoRepoForked />}>1,158</Button>
-        <Button leftIcon={<GoIssueOpened />}>23</Button>
+        <Button leftIcon={<GoStar />}>{repo.stargazers_count}</Button>
+        <Button leftIcon={<GoRepoForked />}>{repo.forks_count}</Button>
+        <Button leftIcon={<GoIssueOpened />}>{repo.open_issues_count}</Button>
       </Stack>
     </Flex>
   );

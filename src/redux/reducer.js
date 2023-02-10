@@ -1,10 +1,11 @@
-import { SET_DATEJUMP, SET_LANGUAGE, SET_VIEWSTYLE } from "./action";
+import { GET_REPOS, SET_DATEJUMP, SET_LANGUAGE, SET_VIEWSTYLE } from "./action";
 
 const initState = {
   viewStyle: "grid",
   language: "all",
   dateJump: "daily",
   theme: "dark",
+  repos: [],
 };
 
 export const Reducer = (state = initState, { type, payload }) => {
@@ -15,6 +16,8 @@ export const Reducer = (state = initState, { type, payload }) => {
       return { ...state, dateJump: payload };
     case SET_VIEWSTYLE:
       return { ...state, viewStyle: payload };
+    case GET_REPOS:
+      return { ...state, repos: payload };
     default:
       return state;
   }
