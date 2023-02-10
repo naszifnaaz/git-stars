@@ -49,7 +49,11 @@ export const Filters = () => {
         </MenuList>
       </Menu>
 
-      <Stack isInline spacing={"0"}>
+      <Stack
+        isInline
+        spacing={"0"}
+        display={["none", "block", "block", "block"]}
+      >
         <Button
           leftIcon={<FaTable />}
           roundedRight={0}
