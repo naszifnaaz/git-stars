@@ -9,6 +9,7 @@ import {
   Box,
   Icon,
   Flex,
+  useColorMode,
 } from "@chakra-ui/react";
 import { useState } from "react";
 import languages from "../data/languages";
@@ -18,8 +19,18 @@ export const Filters = () => {
   const [dateJump, setDateJump] = useState("daily");
   const [viewStyle, setViewStyle] = useState("grid");
   const [language, setLanguage] = useState("");
+  const { colorMode, toggleColorMode } = useColorMode("dark");
 
-  console.log(dateJump, viewStyle, language);
+  // Temporary Color logic
+  let activeColor;
+  let passiveColor;
+  if (colorMode === "dark") {
+    activeColor = "gray.200";
+    passiveColor = "whiteAlpha.300";
+  } else {
+    activeColor = "gray.700";
+    passiveColor = "blackAlpha.300";
+  }
   return (
     <Flex
       flexDirection={["column", "column", "row", "row"]}
@@ -52,13 +63,13 @@ export const Filters = () => {
       <Stack
         isInline
         spacing={"0"}
-        display={["none", "block", "block", "block"]}
+        display={["none", "none", "block", "block"]}
       >
         <Button
           leftIcon={<FaTable />}
           roundedRight={0}
           onClick={() => setViewStyle("grid")}
-          color={viewStyle === "grid" ? "gray.200" : "whiteAlpha.300"}
+          color={viewStyle === "grid" ? activeColor : passiveColor}
           _focus={{ boxShadow: "none" }}
           border="1px solid gray"
           borderRight={0}
@@ -69,7 +80,7 @@ export const Filters = () => {
           leftIcon={<FaListAlt />}
           roundedLeft={0}
           onClick={() => setViewStyle("list")}
-          color={viewStyle === "list" ? "gray.200" : "whiteAlpha.300"}
+          color={viewStyle === "list" ? activeColor : passiveColor}
           _focus={{ boxShadow: "none" }}
           border="1px solid gray"
         >
