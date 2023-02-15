@@ -12,10 +12,10 @@ function App() {
   const language = useSelector((store) => store.language);
   const dateJump = useSelector((store) => store.dateJump);
 
-  const [endDate, setEndDate] = useState(
+  const [endDate, setEndDate] = useState(moment().format());
+  const [startDate, setStartDate] = useState(
     moment().subtract(1, dateJump).format()
   );
-  const [startDate, setStartDate] = useState(endDate);
 
   // Return date in GitHub API format
   function transformFilters({ startDate, endDate, language }) {
@@ -35,13 +35,15 @@ function App() {
     setEndDate(moment().subtract(1, "day").format());
     setStartDate(moment(endDate).subtract(1, dateJump).format());
 
+    console.log(dateJump, startDate, endDate);
+
     const filters = transformFilters({ language, startDate, endDate });
     const filtersQuery = new URLSearchParams(filters).toString();
 
     fetch(`https://api.github.com/search/repositories?${filtersQuery}`)
       .then((res) => res.json())
       .then((data) => dispatch(getRepos(data.items)));
-  }, [dispatch, language, dateJump]);
+  }, [dispatch, language, dateJump, startDate, endDate]);
 
   return (
     <div className="App">
