@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import "./App.css";
 import { Feed } from "./components/Feed";
 import { Filters } from "./components/Filters";
@@ -12,42 +12,37 @@ function App() {
   const language = useSelector((store) => store.language);
   const dateJump = useSelector((store) => store.dateJump);
 
-  const endDate = moment().format("YYYY-MM-DDTHH:MM:SSZ");
-  let startDate;
-  let query = "";
-
-  switch (dateJump) {
-    case "daily":
-      startDate = moment().subtract(1, "d").format("YYYY-MM-DDTHH:MM:SSZ");
-      break;
-    case "weekly":
-      startDate = moment().subtract(1, "w").format("YYYY-MM-DDTHH:MM:SSZ");
-      break;
-    case "monthly":
-      startDate = moment().subtract(1, "M").format("YYYY-MM-DDTHH:MM:SSZ");
-      break;
-    case "yearly":
-      startDate = moment().subtract(1, "y").format("YYYY-MM-DDTHH:MM:SSZ");
-      break;
-    default:
-      startDate = endDate;
-      break;
-  }
-
-  query = formatDate(startDate, endDate);
+  const [endDate, setEndDate] = useState(
+    moment().subtract(1, dateJump).format()
+  );
+  const [startDate, setStartDate] = useState(endDate);
 
   // Return date in GitHub API format
-  function formatDate(startDate, endDate) {
-    return `created${startDate}:end${endDate}`;
+  function transformFilters({ startDate, endDate, language }) {
+    const transformedFilters = {};
+
+    const languageQuery = language ? `language:${language} ` : "";
+    const dateQuery = `created:${startDate}..${endDate}`;
+
+    transformedFilters.q = languageQuery + dateQuery;
+    transformedFilters.sort = "stars";
+    transformedFilters.order = "desc";
+
+    return transformedFilters;
   }
 
   useEffect(() => {
-    fetch(
-      `https://api.github.com/search/repositories?q=${language}&sort=stars&order=desc`
-    )
+    setEndDate(moment().subtract(1, "day").format());
+    setStartDate(moment(endDate).subtract(1, dateJump).format());
+
+    const filters = transformFilters({ language, startDate, endDate });
+    const filtersQuery = new URLSearchParams(filters).toString();
+
+    fetch(`https://api.github.com/search/repositories?${filtersQuery}`)
       .then((res) => res.json())
       .then((data) => dispatch(getRepos(data.items)));
   }, [dispatch, language, dateJump]);
+
   return (
     <div className="App">
       <Header />

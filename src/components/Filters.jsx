@@ -58,16 +58,16 @@ export const Filters = () => {
           </Box>
         </MenuButton>
         <MenuList>
-          <MenuItem onClick={() => dispatch(setDateJump("daily"))}>
+          <MenuItem onClick={() => dispatch(setDateJump("day"))}>
             Daily
           </MenuItem>
-          <MenuItem onClick={() => dispatch(setDateJump("weekly"))}>
+          <MenuItem onClick={() => dispatch(setDateJump("week"))}>
             Weekly
           </MenuItem>
-          <MenuItem onClick={() => dispatch(setDateJump("monthly"))}>
+          <MenuItem onClick={() => dispatch(setDateJump("month"))}>
             Monthly
           </MenuItem>
-          <MenuItem onClick={() => dispatch(setDateJump("yearly"))}>
+          <MenuItem onClick={() => dispatch(setDateJump("year"))}>
             Yearly
           </MenuItem>
         </MenuList>

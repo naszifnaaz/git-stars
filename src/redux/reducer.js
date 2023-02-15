@@ -3,7 +3,7 @@ import { GET_REPOS, SET_DATEJUMP, SET_LANGUAGE, SET_VIEWSTYLE } from "./action";
 const initState = {
   viewStyle: "grid",
   language: "all",
-  dateJump: "All Time",
+  dateJump: "year",
   theme: "dark",
   repos: [],
 };
