@@ -3,7 +3,7 @@ import { Repo } from "./Repo";
 import { useSelector } from "react-redux";
 
 export const Feed = () => {
-  const repos = useSelector((store) => store.repos);
+  const repos = useSelector((store) => store.repos) || [];
   const viewStyle = useSelector((store) => store.viewStyle);
   return (
     <>

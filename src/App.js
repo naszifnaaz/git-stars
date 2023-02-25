@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import "./App.css";
 import { Feed } from "./components/Feed";
 import { Filters } from "./components/Filters";
@@ -12,38 +12,21 @@ function App() {
   const language = useSelector((store) => store.language);
   const dateJump = useSelector((store) => store.dateJump);
 
-  const [endDate, setEndDate] = useState(moment().format());
-  const [startDate, setStartDate] = useState(
-    moment().subtract(1, dateJump).format()
-  );
-
-  // Return date in GitHub API format
-  function transformFilters({ startDate, endDate, language }) {
-    const transformedFilters = {};
-
-    const languageQuery = language ? `language:${language} ` : "";
-    const dateQuery = `created:${startDate}..${endDate}`;
-
-    transformedFilters.q = languageQuery + dateQuery;
-    transformedFilters.sort = "stars";
-    transformedFilters.order = "desc";
-
-    return transformedFilters;
-  }
+  let endDate = moment().format();
+  let startDate = moment(endDate).subtract(1, dateJump).format();
 
   useEffect(() => {
-    setEndDate(moment().subtract(1, "day").format());
-    setStartDate(moment(endDate).subtract(1, dateJump).format());
+    async function fetchRepos() {
+      const res = await fetch(
+        `https://api.github.com/search/repositories?q=all+language:${language}&sort=stars&order=desc`
+      );
+      const data = await res.json();
+      dispatch(getRepos(data.items));
+    }
+    fetchRepos();
+  }, [dispatch, language, dateJump]);
 
-    console.log(dateJump, startDate, endDate);
-
-    const filters = transformFilters({ language, startDate, endDate });
-    const filtersQuery = new URLSearchParams(filters).toString();
-
-    fetch(`https://api.github.com/search/repositories?${filtersQuery}`)
-      .then((res) => res.json())
-      .then((data) => dispatch(getRepos(data.items)));
-  }, [dispatch, language, dateJump, startDate, endDate]);
+  console.log(dateJump);
 
   return (
     <div className="App">
