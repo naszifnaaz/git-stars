@@ -3,6 +3,8 @@ export const SET_LANGUAGE = "SET_LANGUAGE";
 export const SET_DATEJUMP = "SET_DATEJUMP";
 export const SET_VIEWSTYLE = "SET_VIEWSTYLE";
 export const GET_REPOS = "GET_REPOS";
+export const SET_LOADING = "SET_LOADING";
+export const REMOVE_LOADING = "REMOVE_LOADING";
 
 //Action Creator
 export const setLanguage = (language) => {
@@ -30,5 +32,17 @@ export const getRepos = (repos) => {
   return {
     type: GET_REPOS,
     payload: repos,
+  };
+};
+
+export const setLoading = () => {
+  return {
+    type: SET_LOADING,
+  };
+};
+
+export const removeLoading = () => {
+  return {
+    type: REMOVE_LOADING,
   };
 };
